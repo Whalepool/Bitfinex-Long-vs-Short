@@ -4,11 +4,12 @@ Tired of the mis information out there regarding people's analysis and understan
   
 It's not pretty, but it works.  
   
-## Todo 
+## Todo (someone else not me !)
 If anyones feeling keen and enthusiastic, they could... 
 - Put the tickers you want to fetch the data for into a dict/list, maybe build the list from an api query
 - Put in api requests into a function to handle/wait upon api limit errors
 - Query the coinmarketcap api, `https://api.coinmarketcap.com/v1/ticker/?limit=0` and add another column of data for total supply/circulating supply and the % of the tickers long/short delta relative to the total circulating supply
+- Save the data hourly to mongo so it can be plotted at some point in the future over price etc 
   
 For more info join [@whalepoolbtc](https://t.me/whalepoolbtc) on telegram   
 
