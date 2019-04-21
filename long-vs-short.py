@@ -2,220 +2,142 @@ from pprint import pprint
 import requests
 import time
 from tabulate import tabulate
-from math import log10, floor
+from utils import *
 
 
-endc      = '\033[0m'
-bold      = '\033[1m'
-spacerstr = '--------------------'
+title('The be all & end all of the finex long/short data') 
+
+# Ticker pairs
+tpairs = ['BTCUSD','ETHUSD','ETHBTC','XRPUSD','XRPBTC']
+
+# Get the coin market cap data for the tickers 
+cmc_data = get_cmc_data( [t[0:-3] for t in tpairs]  )
+
+# Currencies / Funding 
+currs  = { 
+	# Currency : [ Preformatter, Postformatter ]
+	'USD': [ '$', '',   ], 
+	'EUR': [ '€', '',   ],
+	'BTC': [ '',  ' BTC' ], 
+	'ETH': [ '',  ' ETH' ],
+	'EOS': [ '',  ' EOS' ],
+	'XRP': [ '',  ' XRP' ],
+}
 
 
-def round_sig(x, sig=5):
-	return round(x, sig-int(floor(log10(abs(x))))-1)
+# Get ticker data
+query = ",t".join(tpairs)
+tdata = api_request("https://api.bitfinex.com/v2/tickers?symbols=t"+query)
+for data in tdata:
+	cd = currs[ data[0][-3:] ]
+	print1( data[0][1:] +' price: '+cd[0]+str(data[7])+cd[1]  )
 
-def spacer():
-	green  = '\033[92m'
-	print(green, spacerstr, endc)
-
-###################
-# BLUE 
-def print1(txt):
-	x   = '\033[94m'
-	print(x, txt, endc)
-
-###################
-# PURPLE  
-def print2(txt):
-	x  = '\033[95m'
-	print(x, txt, endc)
-
-###################
-# CYAN 
-def print3(txt):
-	x  = '\033[96m'
-	print(x, txt, endc)
-
-###################
-# GREEN 
-def print4(txt):
-	x  = '\033[92m'
-	print(x, txt, endc)
-
-def f(num):
-	return str("{:,}".format(num))
-
-
-print('\033[93m', bold, spacerstr, 'The be all & end all of the finex long/short data', spacerstr,  endc)
-
-# Prices
-r = requests.get("https://api.bitfinex.com/v2/tickers?symbols=tBTCUSD,tETHUSD,tETHBTC")
-btc_price = round(r.json()[0][7])
-eth_price = round(r.json()[1][7])
-ethbtc_price = r.json()[2][7]
-
-print1('BTCUSD price: $'+str(btc_price))
-print1('ETHUSD price: $'+str(eth_price))
-print1('ETHBTC price: '+str(ethbtc_price))
 spacer()
-
 time.sleep(1)
 
-# Rates
-r = requests.get("https://api.bitfinex.com/v2/tickers?symbols=fBTC,fETH,fUSD")
-btc_rate = round_sig(r.json()[0][1])
-eth_rate = round_sig(r.json()[1][1])
-usd_rate = round_sig(r.json()[2][1])
+# Get funding data 
+query = ",f".join(currs)
+fdata = api_request("https://api.bitfinex.com/v2/tickers?symbols=f"+query)
+for data in fdata: 
+	cd = currs[ data[0][-3:] ]
+	print1( data[0][1:]+' FRR: '+str(round_sig(data[1]*100)))
 
-print1('BTC FRR '+str(round_sig(btc_rate*100)))
-print1('ETH FRR '+str(round_sig(eth_rate*100)))
-print1('USD FRR '+str(round_sig(usd_rate*100)))
 spacer()
-
 time.sleep(1)
 
-# BTC USD 
-# Total longs
-r = requests.get("https://api.bitfinex.com/v2/stats1/pos.size:1m:tBTCUSD:long/last") 
-btc_total_long = round(r.json()[1])
-btc_total_long_usd_value = round(btc_total_long*btc_price)
+# Get margin data
+mdata = [] 
+for data in tdata:
+
+	# Ticker breakdown 
+	ticker = data[0]
+	fpart = ticker[1:-3]
+	fcd = currs[ fpart ]
+	lpart = ticker[-3:]
+	lcd = currs[ lpart ]
+
+	# Get USD price for fpart (eg: ETH in the ETHBTC) 
+	fpart_usd_price = next((t for t in tdata if t[0]=='t'+fpart+'USD'), [1,1])[1]
+	lpart_usd_price = next((t for t in tdata if t[0]=='t'+fpart+'USD'), [1,1])[1]
 
 
-# Total short 
-r = requests.get('https://api.bitfinex.com/v2/stats1/pos.size:1m:tBTCUSD:short/last')
-btc_total_short = round(r.json()[1])
-btc_total_short_usd_value = round(btc_total_short*btc_price)
+	output = [] 
+	output.extend([ ticker, fpart, lpart, fpart_usd_price, lpart_usd_price ])
 
+	# Total longs 
+	total_longs       = round( api_request("https://api.bitfinex.com/v2/stats1/pos.size:1m:"+ticker+":long/last")[1] )
+	total_longs_usd   = round( total_longs * fpart_usd_price )
+	output.extend([total_longs,total_longs_usd ]) 
 
-# Total USD Used 
-r = requests.get('https://api.bitfinex.com/v2/stats1/credits.size.sym:1m:fUSD:tBTCUSD/last')
-btc_total_usd_used = round(r.json()[1])
+	# Total shorts
+	total_shorts      = round( api_request("https://api.bitfinex.com/v2/stats1/pos.size:1m:"+ticker+":short/last")[1] )
+	total_shorts_usd  = round( total_shorts * fpart_usd_price )
+	output.extend([ total_shorts, total_shorts_usd ]) 
 
+	# Long funding 
+	long_funding      = round( api_request("https://api.bitfinex.com/v2/stats1/credits.size.sym:1m:f"+lpart+":"+ticker+"/last")[1] )
+	long_funding_usd  = round( long_funding * lpart_usd_price )
+	output.extend([ long_funding, long_funding_usd ]) 
 
-# Total BTC Used 
-r = requests.get('https://api.bitfinex.com/v2/stats1/credits.size.sym:1m:fBTC:tBTCUSD/last')
-btc_total_btc_used = round(r.json()[1])
+	# Short funding  
+	short_funding     = round( api_request("https://api.bitfinex.com/v2/stats1/credits.size.sym:1m:f"+fpart+":"+ticker+"/last")[1] )
+	short_funding_usd = round( short_funding * fpart_usd_price )
+	output.extend([ short_funding, short_funding_usd ])
 
+	# L/S Ratios
+	total = total_longs + total_shorts
+	percent_long     = int(( total_longs  / total ) * 100)
+	percent_short    = int(( total_shorts / total ) * 100)
+	overall_ls_ratio = str(percent_long)+':'+str(percent_short)
+	output.append( overall_ls_ratio )
 
-total = btc_total_short + btc_total_long
-percent_short = str(int(( btc_total_short / total ) * 100))
-percent_long = str(int(( btc_total_long / total ) * 100))
+	# L/S relative to available supply
+	as_percent_long  = round_sig( ( total_longs  / cmc_data[fpart]['available_supply'] ) * 100, 2)
+	as_percent_short = round_sig( ( total_shorts / cmc_data[fpart]['available_supply'] ) * 100, 2)
+	output.extend([ as_percent_long, as_percent_short ])
 
-print3('BTC, long:short, '+str(percent_long)+':'+str(percent_short))
-print2(f(btc_total_long)+' BTC long ( $'+f(btc_total_long_usd_value)+' ) consuming $'+f(btc_total_usd_used)+' of USD margin')
-print2(f(btc_total_short)+' BTC short ( $'+f(btc_total_short_usd_value)+' ), consuming '+f(btc_total_btc_used)+' of funded BTC margin')
-spacer()
+	# Interest rates
+	long_funding_rate    = round_sig( next((t for t in fdata if t[0]=='f'+lpart), [1,1])[1], 2 )
+	short_funding_rate   = round_sig( next((t for t in fdata if t[0]=='f'+fpart), [1,1])[1], 2 )
+	output.extend([ long_funding_rate, short_funding_rate ])
 
+	# Interest amounts 
+	long_funding_charge  = round_sig( long_funding *long_funding_rate  )
+	short_funding_charge = round_sig( short_funding*short_funding_rate )
+	output.extend([ long_funding_charge, short_funding_charge ])
 
-time.sleep(3)
+	print3(ticker[1:])
+	print2("Overall long:short ratio "+str(overall_ls_ratio))
+	print2(str(as_percent_long)+"% of available supply is margin long")
+	print2(str(as_percent_short)+"% of available supply is margin short")
+	print2(f(total_longs)+" "+fpart+" long ( $"+f(total_longs_usd)+" ) consuming "+lcd[0]+f(long_funding)+" of "+lpart+" margin")
+	print2(f(total_shorts)+" "+fpart+" short ( $"+f(total_shorts_usd)+" ) consuming "+fcd[0]+f(short_funding)+" of "+fpart+" margin")
+	print2('Funded longs are paying '+lcd[0]+f(long_funding_charge)+lcd[1]+" per day to be long")
+	print2('Funded shorts are paying '+fcd[0]+f(short_funding_charge)+fcd[1]+" per day to be short")
 
-
-# ETH USD 
-# Total longs
-r = requests.get("https://api.bitfinex.com/v2/stats1/pos.size:1m:tETHUSD:long/last") 
-eth_total_long = round(r.json()[1])
-eth_total_long_usd_value = round(eth_total_long*eth_price)
-
-# Total short 
-r = requests.get('https://api.bitfinex.com/v2/stats1/pos.size:1m:tETHUSD:short/last')
-eth_total_short = round(r.json()[1])
-eth_short_usd_value = round(eth_total_short*eth_price)
-
-# Total USD Used 
-r = requests.get('https://api.bitfinex.com/v2/stats1/credits.size.sym:1m:fUSD:tETHUSD/last')
-eth_total_usd_used = round(r.json()[1])
-
-# Total ETH Used 
-r = requests.get('https://api.bitfinex.com/v2/stats1/credits.size.sym:1m:fETH:tETHUSD/last')
-eth_total_eth_used = round(r.json()[1])
-
-
-total = eth_total_short + eth_total_long
-percent_short1 = str(int(( eth_total_short / total ) * 100))
-percent_long1 = str(int(( eth_total_long / total ) * 100))
-
-print3('ETH USD, long:short, '+str(percent_long1)+':'+str(percent_short1))
-print2(f(eth_total_long)+' ETH long ( $'+f(eth_total_long_usd_value)+' ) consuming $'+f(eth_total_usd_used)+' of USD margin')
-print2(f(eth_total_short)+' ETH short ( $'+f(eth_short_usd_value)+' ), consuming '+f(eth_total_eth_used)+' of funded ETH margin')
-spacer()
-
-time.sleep(3)
-
-
-# ETHBTC USD 
-# Total longs
-r = requests.get("https://api.bitfinex.com/v2/stats1/pos.size:1m:tETHBTC:long/last") 
-ethbtc_total_long = round(r.json()[1])
-ethbtc_total_long_usd_value = round(ethbtc_total_long*eth_price)
-
-# Total short 
-r = requests.get('https://api.bitfinex.com/v2/stats1/pos.size:1m:tETHBTC:short/last')
-ethbtc_total_short = round(r.json()[1])
-ethbtc_short_usd_value = round(ethbtc_total_short*eth_price)
-
-# Total BTC Used ( for longing eth btc )
-r = requests.get('https://api.bitfinex.com/v2/stats1/credits.size.sym:1m:fBTC:tETHBTC/last')
-ethbtc_total_btc_used = round(r.json()[1])
-ethbtc_long_btcused_value = round(ethbtc_total_btc_used*btc_price)
-
-# Total ETH Used ( for shorting eth btc ) 
-r = requests.get('https://api.bitfinex.com/v2/stats1/credits.size.sym:1m:fETH:tETHBTC/last')
-ethbtc_total_eth_used = round(r.json()[1])
-
-
-total = ethbtc_total_short + ethbtc_total_long
-percent_short2 = str(int(( ethbtc_total_short / total ) * 100))
-percent_long2 = str(int(( ethbtc_total_long / total ) * 100))
-
-print3('ETH BTC, long:short, '+str(percent_long2)+':'+str(percent_short2))
-print2(f(ethbtc_total_long)+' ETH long ( $'+f(ethbtc_total_long_usd_value)+' ) consuming '+f(ethbtc_total_btc_used)+' BTC ( $'+f(ethbtc_long_btcused_value)+' ) of BTC margin')
-print2(f(ethbtc_total_short)+' ETH short ( $'+f(ethbtc_short_usd_value)+' ), consuming '+f(ethbtc_total_eth_used)+' of funded ETH margin')
-spacer()
-
-
-total = ( eth_total_short + ethbtc_total_short) + ( eth_total_long + ethbtc_total_long)
-percent_short3 = str(int(( ( eth_total_short + ethbtc_total_short) / total ) * 100))
-percent_long3 = str(int(( ( eth_total_long + ethbtc_total_long) / total ) * 100))
-
-print3('ETH USD + ETH BTC, long:short, '+str(percent_long3)+':'+str(percent_short3))
-
-print2(f(eth_total_long+ethbtc_total_long)+' ETH long ( $'+f(eth_total_long_usd_value+ethbtc_total_long_usd_value)+' ) consuming $'+f(eth_total_usd_used+ethbtc_long_btcused_value)+' of USD margin')
-print2(f(eth_total_short+ethbtc_total_short)+' ETH short ( $'+f(eth_short_usd_value+ethbtc_short_usd_value)+' )')
-spacer()
-
+	spacer()
+	mdata.append(output)
+	time.sleep(3)
 
 
 table = []
-table.append([
-	'BTCUSD @ $'+f(btc_price), str(percent_long)+':'+str(percent_short),'-',
-	f(btc_total_long)+' ($'+f(btc_total_long_usd_value)+')', '$'+f(btc_total_usd_used),'-',
-	f(btc_total_short)+' ($'+f(btc_total_short_usd_value)+')', f(btc_total_btc_used),'-',
-	'$'+f(round_sig(btc_total_usd_used*usd_rate)), f(round_sig(btc_total_btc_used*btc_rate))+' BTC'
-	])
-table.append([
-	'ETHUSD @ $'+f(eth_price), str(percent_long1)+':'+str(percent_short1),'-',
-	f(eth_total_long)+' ($'+f(eth_total_long_usd_value)+')', '$'+f(eth_total_usd_used),'-',
-	f(eth_total_short)+' ($'+f(eth_short_usd_value)+')', f(eth_total_eth_used),'-',
-	'$'+f(round_sig(eth_total_usd_used*usd_rate)), f(round_sig(eth_total_eth_used*eth_rate))+' ETH'
-	])
-table.append([
-	'ETHBTC @ '+f(ethbtc_price), str(percent_long2)+':'+str(percent_short2),'-',
-	f(ethbtc_total_long)+' ($'+f(ethbtc_total_long_usd_value)+')', '$'+f(ethbtc_total_long_usd_value),'-',
-	f(ethbtc_total_short)+' ($'+f(ethbtc_short_usd_value)+')', f(ethbtc_total_eth_used),'-',
-	f(round_sig(ethbtc_total_btc_used*btc_rate))+' BTC', f(round_sig(ethbtc_total_eth_used*eth_rate))+' ETH'
-	])
-table.append([
-	'ETHUSD + ETHBTC', str(percent_long3)+':'+str(percent_short3),'-',
-	f(eth_total_long+ethbtc_total_long)+' ($'+f(eth_total_long_usd_value+ethbtc_total_long_usd_value)+')', '$'+f(eth_total_usd_used+ethbtc_long_btcused_value),'-',
-	f(eth_total_short+ethbtc_total_short)+' ($'+f(eth_short_usd_value+ethbtc_short_usd_value)+')',f(eth_total_eth_used+ethbtc_total_eth_used),'-',
-	'$'+f(round_sig( (eth_total_usd_used*usd_rate) + ((ethbtc_total_btc_used*btc_rate)*btc_price) )), f(round_sig( (eth_total_eth_used*eth_rate) + (ethbtc_total_eth_used*eth_rate) ))+' ETH'
-	])
+for data in mdata:
+
+	table.append([
+		data[0], data[13], str(data[14])+':'+str(data[15]),
+		f(data[5])+' ($'+f(data[6])+')', currs[data[2]][0]+f(data[9])+currs[data[2]][1], '-',
+		f(data[7])+' ($'+f(data[8])+')', currs[data[1]][0]+f(data[11])+currs[data[1]][1], '-',
+		currs[data[2]][0]+f(data[18])+currs[data[2]][1], currs[data[1]][0]+f(data[19])+currs[data[1]][1]
+		])
+
 
 print(tabulate(table, headers=[
-		"Pair", "L/S ratio",'-',
+		"Pair", "L/S ratio","% of supply long:short",
 		'Total Long','Funded Longs','-',
 		'Total Short', 'Funded Shorts','-',
 		'Long Daily Charge', 'Short Daily Charge'
 	]))
+
 exit() 
 
 
