@@ -4,11 +4,16 @@ import time
 from tabulate import tabulate
 from utils import *
 
-
 title('The be all & end all of the finex long/short data') 
 
 # Ticker pairs
-tpairs = ['BTCUSD','ETHUSD','ETHBTC','XRPUSD','XRPBTC']
+tpairs = [
+	'BTCUSD',
+	'ETHUSD','ETHBTC',
+	'XRPUSD','XRPBTC',
+	'EOSUSD','EOSBTC',
+	'LTCUSD','LTCBTC'
+]
 
 # Get the coin market cap data for the tickers 
 cmc_data = get_cmc_data( [t[0:-3] for t in tpairs]  )
@@ -20,8 +25,9 @@ currs  = {
 	'EUR': [ '€', '',   ],
 	'BTC': [ '',  ' BTC' ], 
 	'ETH': [ '',  ' ETH' ],
-	'EOS': [ '',  ' EOS' ],
 	'XRP': [ '',  ' XRP' ],
+	'EOS': [ '',  ' EOS' ],
+	'LTC': [ '',  ' LTC' ],
 }
 
 
@@ -138,6 +144,14 @@ print(tabulate(table, headers=[
 		'Long Daily Charge', 'Short Daily Charge'
 	]))
 
+
+
+
+spacer()
+print3('Making chart visualisations...')
+make_chart( cmc_data, mdata ) 
+
+print2('Done..')
 exit() 
 
 

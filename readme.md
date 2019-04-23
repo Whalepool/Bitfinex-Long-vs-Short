@@ -6,9 +6,10 @@ It's not pretty, but it works.
   
 ## Todo (someone else not me !)
 If anyones feeling keen and enthusiastic, they could... 
-- --Put the tickers you want to fetch the data for into a dict/list, maybe build the list from an api query--
-- --Put in api requests into a function to handle/wait upon api limit errors--
-- --Query the coinmarketcap api, `https://api.coinmarketcap.com/v1/ticker/?limit=0` and add another column of data for total supply/circulating supply and the % of the tickers long/short delta relative to the total circulating supply--
+- ~~Put the tickers you want to fetch the data for into a dict/list, maybe build the list from an api query~~
+- ~~Put in api requests into a function to handle/wait upon api limit errors~~
+- ~~Query the coinmarketcap api, `https://api.coinmarketcap.com/v1/ticker/?limit=0` and add another column of data for total supply/circulating supply and the % of the tickers long/short delta relative to the total circulating supply~~
+- ~~Plot some visualisations of the L/S data~~ 
 - Fix the combination pairs, where by ETHUSD+ETHBTC can be added up together 
 - Add flag to change logging level output 
 - Build currency values automatically from inputted ticker pairs
@@ -18,7 +19,12 @@ If anyones feeling keen and enthusiastic, they could...
   
 For more info join [@whalepoolbtc](https://t.me/whalepoolbtc) on telegram   
 
-## Example output 
+## Example console output 
+Easy copy/paste snippets
+Easy table for quick comparisson 
 
 ![Example output](https://i.imgur.com/B6Q9r97.png)
+
+## Example data visualisaiton output 
+![Example output](https://i.imgur.com/ePdIjHQ.png)
 
