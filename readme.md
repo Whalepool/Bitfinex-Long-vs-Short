@@ -2,7 +2,15 @@
 
 Tired of the mis information out there regarding people's analysis and understanding of the bitfinex long/short data - I create this script so people can better get an understanding of the numbers and what they mean.  
   
-It's not pretty, but it works.  
+It's not pretty, but it works.
+
+Example - to use run main script, use -t and currency pairs you'd like to use (comma separated).  
+`long-vs-short.py -t BTCUSD, ETHUSD`  
+  
+To run the csv/json generator, use -t and currency pairs you'd like to use (comma separated).  
+`data-to-file.py -t BTCUSD, ETHUSD`  
+  
+    
   
 ## Todo (someone else not me !)
 If anyones feeling keen and enthusiastic, they could... 
