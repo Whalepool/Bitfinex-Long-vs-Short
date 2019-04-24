@@ -27,5 +27,5 @@ Easy table for quick comparisson
 ![Example output](https://i.imgur.com/B6Q9r97.png)
 
 ## Example data visualisaiton output 
-![Example output](https://i.imgur.com/ePdIjHQ.png)
+![Example output](https://i.imgur.com/HhvVsKQ.png)
 
