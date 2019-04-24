@@ -10,10 +10,11 @@ If anyones feeling keen and enthusiastic, they could...
 - ~~Put in api requests into a function to handle/wait upon api limit errors~~
 - ~~Query the coinmarketcap api, `https://api.coinmarketcap.com/v1/ticker/?limit=0` and add another column of data for total supply/circulating supply and the % of the tickers long/short delta relative to the total circulating supply~~
 - ~~Plot some visualisations of the L/S data~~ 
-- Fix the combination pairs, where by ETHUSD+ETHBTC can be added up together 
+- ~~Fix the combination pairs, where by ETHUSD+ETHBTC can be added up together~~ 
+- ~~Build currency values automatically from inputted ticker pairs~~
+- ~~Allow input of ticker pairs from command line arguments~~
+- If we have a small number of tickers, sleep timer can be quicker, if more tickers, sleep time delay longer
 - Add flag to change logging level output 
-- Build currency values automatically from inputted ticker pairs
-- Allow input of ticker pairs from command line arguments 
 - Save the data hourly to mongo so it can be plotted at some point in the future over price etc 
 - Imgur auto upload plotted data for easy sharing 
   

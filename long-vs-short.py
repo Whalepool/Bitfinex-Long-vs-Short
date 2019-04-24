@@ -1,58 +1,40 @@
 from pprint import pprint
+import argparse
 import requests
 import time
 from tabulate import tabulate
 from utils import *
 
+parser = argparse.ArgumentParser()
+parser.add_argument('-t','--tpairs', nargs='+', help='Ticker pairs to check data for', required=False)
+args = parser.parse_args()
+
+
 title('The be all & end all of the finex long/short data') 
 
 # Ticker pairs
-tpairs = [
-	'BTCUSD',
-	'ETHUSD','ETHBTC',
-	'XRPUSD','XRPBTC',
-	'EOSUSD','EOSBTC',
-	'LTCUSD','LTCBTC'
-]
+tpairs = args.tpairs
 
-# Get the coin market cap data for the tickers 
-cmc_data = get_cmc_data( [t[0:-3] for t in tpairs]  )
-
-# Currencies / Funding 
-currs  = { 
-	# Currency : [ Preformatter, Postformatter ]
-	'USD': [ '$', '',   ], 
-	'EUR': [ '€', '',   ],
-	'BTC': [ '',  ' BTC' ], 
-	'ETH': [ '',  ' ETH' ],
-	'XRP': [ '',  ' XRP' ],
-	'EOS': [ '',  ' EOS' ],
-	'LTC': [ '',  ' LTC' ],
-}
-
-
-# Get ticker data
+# Get Ticker + Currency data 
 query = ",t".join(tpairs)
 tdata = api_request("https://api.bitfinex.com/v2/tickers?symbols=t"+query)
-for data in tdata:
-	cd = currs[ data[0][-3:] ]
-	print1( data[0][1:] +' price: '+cd[0]+str(data[7])+cd[1]  )
+currs = get_currencies( tdata ) 
 
-spacer()
-time.sleep(1)
-
-# Get funding data 
+# Get Funding data 
 query = ",f".join(currs)
 fdata = api_request("https://api.bitfinex.com/v2/tickers?symbols=f"+query)
-for data in fdata: 
-	cd = currs[ data[0][-3:] ]
-	print1( data[0][1:]+' FRR: '+str(round_sig(data[1]*100)))
 
-spacer()
-time.sleep(1)
 
-# Get margin data
+# Get the coin market cap data for the tickers 
+cmc_data = get_cmc_data( tdata  )
+
+# Individual margin data
 mdata = [] 
+# Cumulative data 
+cdata = []
+cdata_keys = {} 
+cdi = 0 
+
 for data in tdata:
 
 	# Ticker breakdown 
@@ -98,8 +80,11 @@ for data in tdata:
 	output.append( overall_ls_ratio )
 
 	# L/S relative to available supply
-	as_percent_long  = round_sig( ( total_longs  / cmc_data[fpart]['available_supply'] ) * 100, 2)
-	as_percent_short = round_sig( ( total_shorts / cmc_data[fpart]['available_supply'] ) * 100, 2)
+	marketcap 		 = cmc_data[fpart]['marketcap']
+	available_supply = cmc_data[fpart]['available_supply']
+	max_supply		 = cmc_data[fpart]['max_supply']
+	as_percent_long  = round_sig( ( total_longs  / available_supply ) * 100, 2)
+	as_percent_short = round_sig( ( total_shorts / available_supply ) * 100, 2)
 	output.extend([ as_percent_long, as_percent_short ])
 
 	# Interest rates
@@ -121,11 +106,25 @@ for data in tdata:
 	print2('Funded longs are paying '+lcd[0]+f(long_funding_charge)+lcd[1]+" per day to be long")
 	print2('Funded shorts are paying '+fcd[0]+f(short_funding_charge)+fcd[1]+" per day to be short")
 
-	spacer()
+	# Cumulative data 
+	if fpart not in cdata_keys:
+		cdata_keys[fpart] = cdi 
+		cdata.append( [fpart, marketcap, available_supply, max_supply, as_percent_long, as_percent_short, total_longs_usd, total_shorts_usd ] )
+		cdi += 1 
+	else:
+		index = cdata_keys[fpart] 
+		cdata[index][4] += as_percent_long
+		cdata[index][5] += as_percent_short
+		cdata[index][6] += total_longs_usd
+		cdata[index][7] += total_shorts_usd
+
+
 	mdata.append(output)
-	time.sleep(3)
+	spacer()
+	time.sleep(2)
 
 
+# Output Margin Data table 
 table = []
 for data in mdata:
 
@@ -136,7 +135,7 @@ for data in mdata:
 		currs[data[2]][0]+f(data[18])+currs[data[2]][1], currs[data[1]][0]+f(data[19])+currs[data[1]][1]
 		])
 
-
+print3('Ticker pair margin usage breakdown')
 print(tabulate(table, headers=[
 		"Pair", "L/S ratio","% of supply long:short",
 		'Total Long','Funded Longs','-',
@@ -144,12 +143,33 @@ print(tabulate(table, headers=[
 		'Long Daily Charge', 'Short Daily Charge'
 	]))
 
+spacer()
+
+# Output Cumulative Data table 
+print3('Cumulative Ticker margin usage breakdown')
+table = []
+for data in cdata:
+
+	table.append([
+		data[0], '$'+f(data[1]), f(data[2]), f(data[3]), 
+		str(round_sig(data[4]))+':'+str(round_sig(data[5])),
+		'$'+f(data[6]),'$'+f(data[7]),
+		])
+
+print(tabulate(table, headers=[
+		"Crypto", "Market Cap","Available Supply","Max Supply",
+		"% of supply long:short",
+		'Total Long USD Value','Total Short USD Value'
+	]))
+
+
+
 
 
 
 spacer()
 print3('Making chart visualisations...')
-make_chart( cmc_data, mdata ) 
+make_chart( cmc_data, cdata, mdata ) 
 
 print2('Done..')
 exit() 
