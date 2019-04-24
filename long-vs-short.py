@@ -4,6 +4,9 @@ import requests
 import time
 from tabulate import tabulate
 from utils import *
+import csv 
+import os 
+from datetime import datetime 
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-t','--tpairs', nargs='+', help='Ticker pairs to check data for', required=False)
@@ -29,8 +32,24 @@ fdata = api_request("https://api.bitfinex.com/v2/tickers?symbols=f"+query)
 cmc_data = get_cmc_data( tdata  )
 
 # Individual margin data
+mdata_headers = [
+	'ticker', 'fpart', 'lpart', 'fpart_usd_price', 'lpart_usd_price',
+	'total_longs','total_longs_usd',
+	'total_shorts', 'total_shorts_usd',
+	'long_funding', 'long_funding_usd',
+	'short_funding', 'short_funding_usd',
+	'overall_ls_ratio', 
+	'as_percent_long', 'as_percent_short',
+	'long_funding_rate', 'short_funding_rate',
+	'long_funding_charge', 'short_funding_charge'
+]
 mdata = [] 
+
 # Cumulative data 
+cdata_headers = [ 
+	'fpart', 'marketcap', 'available_supply', 'max_supply', 
+	'as_percent_long', 'as_percent_short', 'total_longs_usd', 'total_shorts_usd'
+]
 cdata = []
 cdata_keys = {} 
 cdi = 0 
@@ -72,6 +91,7 @@ for data in tdata:
 	short_funding_usd = round( short_funding * fpart_usd_price )
 	output.extend([ short_funding, short_funding_usd ])
 
+
 	# L/S Ratios
 	total = total_longs + total_shorts
 	percent_long     = int(( total_longs  / total ) * 100)
@@ -91,6 +111,7 @@ for data in tdata:
 	long_funding_rate    = round_sig( next((t for t in fdata if t[0]=='f'+lpart), [1,1])[1], 2 )
 	short_funding_rate   = round_sig( next((t for t in fdata if t[0]=='f'+fpart), [1,1])[1], 2 )
 	output.extend([ long_funding_rate, short_funding_rate ])
+
 
 	# Interest amounts 
 	long_funding_charge  = round_sig( long_funding *long_funding_rate  )
@@ -163,9 +184,31 @@ print(tabulate(table, headers=[
 	]))
 
 
+# Write to CSV 
+timestamp = datetime.utcnow()
+
+w2csv = [ 
+	['margin data', ROOT_PATH+'/margin_data.csv', mdata, mdata_headers],
+	['cumulative data', ROOT_PATH+'/cumulative_data.csv', cdata, cdata_headers],
+]
+for el in w2csv:
+
+	file_exists = os.path.isfile(el[1])
+
+	print2('Appending '+el[0]+' log to csv file')
+	with open(el[1], 'a') as f:
+		writer = csv.writer(f)
+
+		if file_exists == False:
+			el[3].insert(0,'timestamp')
+			writer.writerow(el[3])
+
+		for row in el[2]:
+			row.insert(0, timestamp)
+			writer.writerow(row)
 
 
-
+exit()
 
 spacer()
 print3('Making chart visualisations...')

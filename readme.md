@@ -13,6 +13,9 @@ If anyones feeling keen and enthusiastic, they could...
 - ~~Fix the combination pairs, where by ETHUSD+ETHBTC can be added up together~~ 
 - ~~Build currency values automatically from inputted ticker pairs~~
 - ~~Allow input of ticker pairs from command line arguments~~
+- Time and date chart
+- Legend to help label charts
+- Output dump of data to csv/json file 
 - If we have a small number of tickers, sleep timer can be quicker, if more tickers, sleep time delay longer
 - Add flag to change logging level output 
 - Save the data hourly to mongo so it can be plotted at some point in the future over price etc 
@@ -27,5 +30,5 @@ Easy table for quick comparisson
 ![Example output](https://i.imgur.com/B6Q9r97.png)
 
 ## Example data visualisaiton output 
-![Example output](https://i.imgur.com/HhvVsKQ.png)
+![Example output](https://i.imgur.com/xXUYtip.png)
 
