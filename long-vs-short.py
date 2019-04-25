@@ -184,19 +184,31 @@ print(tabulate(table, headers=[
 	]))
 
 
+
+
+spacer()
+print3('Making chart visualisations...')
+make_chart( cmc_data, cdata, mdata ) 
+
+
+
+
 # Write to CSV 
 timestamp = datetime.utcnow()
 
+spacer()
+print3('Writing data to csv files, timestamped: '+str(timestamp))
+
 w2csv = [ 
-	['margin data', ROOT_PATH+'/margin_data.csv', mdata, mdata_headers],
-	['cumulative data', ROOT_PATH+'/cumulative_data.csv', cdata, cdata_headers],
+	['margin data', ROOT_PATH+'/margin_data', mdata, mdata_headers],
+	['cumulative data', ROOT_PATH+'/cumulative_data', cdata, cdata_headers],
 ]
 for el in w2csv:
 
-	file_exists = os.path.isfile(el[1])
+	file_exists = os.path.isfile(el[1]+'_log.csv')
 
-	print2('Appending '+el[0]+' log to csv file')
-	with open(el[1], 'a') as f:
+	print2('Appending to '+el[1]+'_log.csv')
+	with open(el[1]+'_log.csv', 'a') as f:
 		writer = csv.writer(f)
 
 		if file_exists == False:
@@ -208,11 +220,18 @@ for el in w2csv:
 			writer.writerow(row)
 
 
-exit()
+	print2('Writing last datset to '+el[1]+'_last.csv')
+	with open(el[1]+'_last.csv', 'w') as f:
+		writer = csv.writer(f)
 
-spacer()
-print3('Making chart visualisations...')
-make_chart( cmc_data, cdata, mdata ) 
+		el[3].insert(0,'timestamp')
+		writer.writerow(el[3])
+
+		for row in el[2]:
+			row.insert(0, timestamp)
+			writer.writerow(row)
+
+
 
 print2('Done..')
 exit() 
