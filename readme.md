@@ -13,12 +13,12 @@ If anyones feeling keen and enthusiastic, they could...
 - ~~Fix the combination pairs, where by ETHUSD+ETHBTC can be added up together~~ 
 - ~~Build currency values automatically from inputted ticker pairs~~
 - ~~Allow input of ticker pairs from command line arguments~~
+- ~~Output dump of data to csv/json file ~~
+- ~~Save the data hourly to csv~~ 
 - Time and date chart
 - Legend to help label charts
-- Output dump of data to csv/json file 
 - If we have a small number of tickers, sleep timer can be quicker, if more tickers, sleep time delay longer
 - Add flag to change logging level output 
-- Save the data hourly to mongo so it can be plotted at some point in the future over price etc 
 - Imgur auto upload plotted data for easy sharing 
   
 For more info join [@whalepoolbtc](https://t.me/whalepoolbtc) on telegram   
