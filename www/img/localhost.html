@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<!-- saved from url=(0022)http://localhost:8888/ -->
+<html class="js sizes customelements history pointerevents postmessage webgl websockets cssanimations csscolumns csscolumns-width csscolumns-span csscolumns-fill csscolumns-gap csscolumns-rule csscolumns-rulecolor csscolumns-rulestyle csscolumns-rulewidth csscolumns-breakbefore csscolumns-breakafter csscolumns-breakinside flexbox picture srcset webworkers" lang=""><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+  <!-- Place favicon.ico in the root directory -->
+
+  <link rel="stylesheet" href="./localhost_files/normalize.css">
+  <link rel="stylesheet" href="./localhost_files/main.css">
+
+  <link href="./localhost_files/css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<header>
+    <div class="logo">bfxmargin.com</div>
+    <div class="timestamp_container">
+          last updated :  
+          <div id="timestamp">2019-05-01 14:19:23</div>
+        </div>
+    <div class="powered">powered by <a href="https://whalepool.io/">Whale<span>Pool</span></a></div>
+  </header>
+
+  <main>
+    <div class="container">
+
+    <!--   <div class="image">
+        <img src="img/chart.png">
+      </div> -->
+
+      <div class="table_container">
+
+        <h2>Ticker pair margin usage breakdown</h2>
+        <div class="table">
+          <div id="poster"><div class="ticker_container">
+                    <div class="ticker_header">BTCUSD</div>
+                      <div class="ticker_data">
+                        <div class="ticker_data_left">
+                          <div class="long_short_ratio">
+                              <div class="data_label">Long/Short Ratio</div>
+                              <div class="data">37:62</div>
+                          </div>
+                          <div class="percent_long_short">
+                            <div class="data_label">% of supply long:short</div>
+                            <div class="data">0.1:0.17</div>
+                          </div>
+                          <div class="long_daily_charge">
+                            <div class="data_label">Long Daily Charge</div>
+                            <div class="data">$35675</div>
+                          </div>
+                          <div class="short_daily_charge">
+                            <div class="data_label">Short Daily Charge</div>
+                            <div class="data">BTC 20.984</div>
+                          </div>
+                        </div>
+                        <div class="ticker_data_right">
+                          <div class="total_long">
+                            <div class="data_label">Total Long</div>
+                            <div class="data">18,066 ($101,386,392)</div>
+                          </div>
+                          <div class="funded_longs">
+                            <div class="data_label">Funded Longs</div>
+                            <div class="data">USD 148,647,345</div>
+                          </div>
+                          <div class="total_short">
+                            <div class="data_label">Total Short</div>
+                            <div class="data">30,599 ($171,721,588)</div>
+                          </div>
+                          <div class="funded_shorts">
+                            <div class="data_label">Funded Shorts</div>
+                            <div class="data">BTC 26,902</div>
+                          </div>
+                        </div>
+                </div></div><div class="ticker_container">
+                    <div class="ticker_header">BTCEUR</div>
+                      <div class="ticker_data">
+                        <div class="ticker_data_left">
+                          <div class="long_short_ratio">
+                              <div class="data_label">Long/Short Ratio</div>
+                              <div class="data">37:62</div>
+                          </div>
+                          <div class="percent_long_short">
+                            <div class="data_label">% of supply long:short</div>
+                            <div class="data">0.0027:0.0046</div>
+                          </div>
+                          <div class="long_daily_charge">
+                            <div class="data_label">Long Daily Charge</div>
+                            <div class="data">€419.42</div>
+                          </div>
+                          <div class="short_daily_charge">
+                            <div class="data_label">Short Daily Charge</div>
+                            <div class="data">BTC 0.62634</div>
+                          </div>
+                        </div>
+                        <div class="ticker_data_right">
+                          <div class="total_long">
+                            <div class="data_label">Total Long</div>
+                            <div class="data">477 (€2,676,924)</div>
+                          </div>
+                          <div class="funded_longs">
+                            <div class="data_label">Funded Longs</div>
+                            <div class="data">EUR 822,389</div>
+                          </div>
+                          <div class="total_short">
+                            <div class="data_label">Total Short</div>
+                            <div class="data">808 (€4,534,496)</div>
+                          </div>
+                          <div class="funded_shorts">
+                            <div class="data_label">Funded Shorts</div>
+                            <div class="data">BTC 803</div>
+                          </div>
+                        </div>
+                </div></div><div class="ticker_container">
+                    <div class="ticker_header">ETHUSD</div>
+                      <div class="ticker_data">
+                        <div class="ticker_data_left">
+                          <div class="long_short_ratio">
+                              <div class="data_label">Long/Short Ratio</div>
+                              <div class="data">76:23</div>
+                          </div>
+                          <div class="percent_long_short">
+                            <div class="data_label">% of supply long:short</div>
+                            <div class="data">0.34:0.11</div>
+                          </div>
+                          <div class="long_daily_charge">
+                            <div class="data_label">Long Daily Charge</div>
+                            <div class="data">$6826.3</div>
+                          </div>
+                          <div class="short_daily_charge">
+                            <div class="data_label">Short Daily Charge</div>
+                            <div class="data">ETH 1.6915</div>
+                          </div>
+                        </div>
+                        <div class="ticker_data_right">
+                          <div class="total_long">
+                            <div class="data_label">Total Long</div>
+                            <div class="data">356,423 ($59,914,706)</div>
+                          </div>
+                          <div class="funded_longs">
+                            <div class="data_label">Funded Longs</div>
+                            <div class="data">USD 28,442,867</div>
+                          </div>
+                          <div class="total_short">
+                            <div class="data_label">Total Short</div>
+                            <div class="data">111,676 ($18,772,736)</div>
+                          </div>
+                          <div class="funded_shorts">
+                            <div class="data_label">Funded Shorts</div>
+                            <div class="data">ETH 99,500</div>
+                          </div>
+                        </div>
+                </div></div><div class="ticker_container">
+                    <div class="ticker_header">EOSUSD</div>
+                      <div class="ticker_data">
+                        <div class="ticker_data_left">
+                          <div class="long_short_ratio">
+                              <div class="data_label">Long/Short Ratio</div>
+                              <div class="data">65:34</div>
+                          </div>
+                          <div class="percent_long_short">
+                            <div class="data_label">% of supply long:short</div>
+                            <div class="data">1.2:0.62</div>
+                          </div>
+                          <div class="long_daily_charge">
+                            <div class="data_label">Long Daily Charge</div>
+                            <div class="data">$5237.4</div>
+                          </div>
+                          <div class="short_daily_charge">
+                            <div class="data_label">Short Daily Charge</div>
+                            <div class="data">EOS 378.97</div>
+                          </div>
+                        </div>
+                        <div class="ticker_data_right">
+                          <div class="total_long">
+                            <div class="data_label">Total Long</div>
+                            <div class="data">11,173,275 ($55,351,287)</div>
+                          </div>
+                          <div class="funded_longs">
+                            <div class="data_label">Funded Longs</div>
+                            <div class="data">USD 21,822,457</div>
+                          </div>
+                          <div class="total_short">
+                            <div class="data_label">Total Short</div>
+                            <div class="data">5,812,259 ($28,793,350)</div>
+                          </div>
+                          <div class="funded_shorts">
+                            <div class="data_label">Funded Shorts</div>
+                            <div class="data">EOS 5,656,322</div>
+                          </div>
+                        </div>
+                </div></div><div class="ticker_container">
+                    <div class="ticker_header">EOSBTC</div>
+                      <div class="ticker_data">
+                        <div class="ticker_data_left">
+                          <div class="long_short_ratio">
+                              <div class="data_label">Long/Short Ratio</div>
+                              <div class="data">73:26</div>
+                          </div>
+                          <div class="percent_long_short">
+                            <div class="data_label">% of supply long:short</div>
+                            <div class="data">0.079:0.028</div>
+                          </div>
+                          <div class="long_daily_charge">
+                            <div class="data_label">Long Daily Charge</div>
+                            <div class="data">BTC0.54054</div>
+                          </div>
+                          <div class="short_daily_charge">
+                            <div class="data_label">Short Daily Charge</div>
+                            <div class="data">EOS 17.627</div>
+                          </div>
+                        </div>
+                        <div class="ticker_data_right">
+                          <div class="total_long">
+                            <div class="data_label">Total Long</div>
+                            <div class="data">746,046 (BTC3,695,837)</div>
+                          </div>
+                          <div class="funded_longs">
+                            <div class="data_label">Funded Longs</div>
+                            <div class="data">BTC 693</div>
+                          </div>
+                          <div class="total_short">
+                            <div class="data_label">Total Short</div>
+                            <div class="data">263,380 (BTC1,304,758)</div>
+                          </div>
+                          <div class="funded_shorts">
+                            <div class="data_label">Funded Shorts</div>
+                            <div class="data">EOS 263,084</div>
+                          </div>
+                        </div>
+                </div></div><div class="ticker_container">
+                    <div class="ticker_header">XRPUSD</div>
+                      <div class="ticker_data">
+                        <div class="ticker_data_left">
+                          <div class="long_short_ratio">
+                              <div class="data_label">Long/Short Ratio</div>
+                              <div class="data">88:11</div>
+                          </div>
+                          <div class="percent_long_short">
+                            <div class="data_label">% of supply long:short</div>
+                            <div class="data">0.17:0.022</div>
+                          </div>
+                          <div class="long_daily_charge">
+                            <div class="data_label">Long Daily Charge</div>
+                            <div class="data">$3145.2</div>
+                          </div>
+                          <div class="short_daily_charge">
+                            <div class="data_label">Short Daily Charge</div>
+                            <div class="data">XRP 1657.7</div>
+                          </div>
+                        </div>
+                        <div class="ticker_data_right">
+                          <div class="total_long">
+                            <div class="data_label">Total Long</div>
+                            <div class="data">71,188,746 ($22,603,851)</div>
+                          </div>
+                          <div class="funded_longs">
+                            <div class="data_label">Funded Longs</div>
+                            <div class="data">USD 13,104,924</div>
+                          </div>
+                          <div class="total_short">
+                            <div class="data_label">Total Short</div>
+                            <div class="data">9,408,842 ($2,987,496)</div>
+                          </div>
+                          <div class="funded_shorts">
+                            <div class="data_label">Funded Shorts</div>
+                            <div class="data">XRP 8,288,407</div>
+                          </div>
+                        </div>
+                </div></div><div class="ticker_container">
+                    <div class="ticker_header">XRPBTC</div>
+                      <div class="ticker_data">
+                        <div class="ticker_data_left">
+                          <div class="long_short_ratio">
+                              <div class="data_label">Long/Short Ratio</div>
+                              <div class="data">91:8</div>
+                          </div>
+                          <div class="percent_long_short">
+                            <div class="data_label">% of supply long:short</div>
+                            <div class="data">0.089:0.0081</div>
+                          </div>
+                          <div class="long_daily_charge">
+                            <div class="data_label">Long Daily Charge</div>
+                            <div class="data">BTC1.7488</div>
+                          </div>
+                          <div class="short_daily_charge">
+                            <div class="data_label">Short Daily Charge</div>
+                            <div class="data">XRP 676.82</div>
+                          </div>
+                        </div>
+                        <div class="ticker_data_right">
+                          <div class="total_long">
+                            <div class="data_label">Total Long</div>
+                            <div class="data">37,307,916 (BTC11,846,009)</div>
+                          </div>
+                          <div class="funded_longs">
+                            <div class="data_label">Funded Longs</div>
+                            <div class="data">BTC 2,242</div>
+                          </div>
+                          <div class="total_short">
+                            <div class="data_label">Total Short</div>
+                            <div class="data">3,393,803 (BTC1,077,600)</div>
+                          </div>
+                          <div class="funded_shorts">
+                            <div class="data_label">Funded Shorts</div>
+                            <div class="data">XRP 3,384,083</div>
+                          </div>
+                        </div>
+                </div></div><div class="ticker_container">
+                    <div class="ticker_header">BABUSD</div>
+                      <div class="ticker_data">
+                        <div class="ticker_data_left">
+                          <div class="long_short_ratio">
+                              <div class="data_label">Long/Short Ratio</div>
+                              <div class="data">21:78</div>
+                          </div>
+                          <div class="percent_long_short">
+                            <div class="data_label">% of supply long:short</div>
+                            <div class="data">0.074:0.28</div>
+                          </div>
+                          <div class="long_daily_charge">
+                            <div class="data_label">Long Daily Charge</div>
+                            <div class="data">$696.06</div>
+                          </div>
+                          <div class="short_daily_charge">
+                            <div class="data_label">Short Daily Charge</div>
+                            <div class="data">BAB 7.8238</div>
+                          </div>
+                        </div>
+                        <div class="ticker_data_right">
+                          <div class="total_long">
+                            <div class="data_label">Total Long</div>
+                            <div class="data">13,166 ($3,697,013)</div>
+                          </div>
+                          <div class="funded_longs">
+                            <div class="data_label">Funded Longs</div>
+                            <div class="data">USD 2,900,252</div>
+                          </div>
+                          <div class="total_short">
+                            <div class="data_label">Total Short</div>
+                            <div class="data">49,107 ($13,789,246)</div>
+                          </div>
+                          <div class="funded_shorts">
+                            <div class="data_label">Funded Shorts</div>
+                            <div class="data">BAB 48,899</div>
+                          </div>
+                        </div>
+                </div></div><div class="ticker_container">
+                    <div class="ticker_header">BABBTC</div>
+                      <div class="ticker_data">
+                        <div class="ticker_data_left">
+                          <div class="long_short_ratio">
+                              <div class="data_label">Long/Short Ratio</div>
+                              <div class="data">12:87</div>
+                          </div>
+                          <div class="percent_long_short">
+                            <div class="data_label">% of supply long:short</div>
+                            <div class="data">0.0032:0.023</div>
+                          </div>
+                          <div class="long_daily_charge">
+                            <div class="data_label">Long Daily Charge</div>
+                            <div class="data">BTC0.01872</div>
+                          </div>
+                          <div class="short_daily_charge">
+                            <div class="data_label">Short Daily Charge</div>
+                            <div class="data">BAB 0.65872</div>
+                          </div>
+                        </div>
+                        <div class="ticker_data_right">
+                          <div class="total_long">
+                            <div class="data_label">Total Long</div>
+                            <div class="data">564 (BTC158,371)</div>
+                          </div>
+                          <div class="funded_longs">
+                            <div class="data_label">Funded Longs</div>
+                            <div class="data">BTC 24</div>
+                          </div>
+                          <div class="total_short">
+                            <div class="data_label">Total Short</div>
+                            <div class="data">4,119 (BTC1,156,615)</div>
+                          </div>
+                          <div class="funded_shorts">
+                            <div class="data_label">Funded Shorts</div>
+                            <div class="data">BAB 4,117</div>
+                          </div>
+                        </div>
+                </div></div><div class="ticker_container">
+                    <div class="ticker_header">LTCUSD</div>
+                      <div class="ticker_data">
+                        <div class="ticker_data_left">
+                          <div class="long_short_ratio">
+                              <div class="data_label">Long/Short Ratio</div>
+                              <div class="data">72:27</div>
+                          </div>
+                          <div class="percent_long_short">
+                            <div class="data_label">% of supply long:short</div>
+                            <div class="data">0.5:0.19</div>
+                          </div>
+                          <div class="long_daily_charge">
+                            <div class="data_label">Long Daily Charge</div>
+                            <div class="data">$2926.1</div>
+                          </div>
+                          <div class="short_daily_charge">
+                            <div class="data_label">Short Daily Charge</div>
+                            <div class="data">LTC 5.8751</div>
+                          </div>
+                        </div>
+                        <div class="ticker_data_right">
+                          <div class="total_long">
+                            <div class="data_label">Total Long</div>
+                            <div class="data">307,942 ($23,588,049)</div>
+                          </div>
+                          <div class="funded_longs">
+                            <div class="data_label">Funded Longs</div>
+                            <div class="data">USD 12,191,964</div>
+                          </div>
+                          <div class="total_short">
+                            <div class="data_label">Total Short</div>
+                            <div class="data">118,930 ($9,109,919)</div>
+                          </div>
+                          <div class="funded_shorts">
+                            <div class="data_label">Funded Shorts</div>
+                            <div class="data">LTC 112,982</div>
+                          </div>
+                        </div>
+                </div></div><div class="ticker_container">
+                    <div class="ticker_header">LTCBTC</div>
+                      <div class="ticker_data">
+                        <div class="ticker_data_left">
+                          <div class="long_short_ratio">
+                              <div class="data_label">Long/Short Ratio</div>
+                              <div class="data">59:40</div>
+                          </div>
+                          <div class="percent_long_short">
+                            <div class="data_label">% of supply long:short</div>
+                            <div class="data">0.037:0.025</div>
+                          </div>
+                          <div class="long_daily_charge">
+                            <div class="data_label">Long Daily Charge</div>
+                            <div class="data">BTC0.20982</div>
+                          </div>
+                          <div class="short_daily_charge">
+                            <div class="data_label">Short Daily Charge</div>
+                            <div class="data">LTC 0.69904</div>
+                          </div>
+                        </div>
+                        <div class="ticker_data_right">
+                          <div class="total_long">
+                            <div class="data_label">Total Long</div>
+                            <div class="data">22,689 (BTC1,737,955)</div>
+                          </div>
+                          <div class="funded_longs">
+                            <div class="data_label">Funded Longs</div>
+                            <div class="data">BTC 269</div>
+                          </div>
+                          <div class="total_short">
+                            <div class="data_label">Total Short</div>
+                            <div class="data">15,352 (BTC1,175,948)</div>
+                          </div>
+                          <div class="funded_shorts">
+                            <div class="data_label">Funded Shorts</div>
+                            <div class="data">LTC 13,443</div>
+                          </div>
+                        </div>
+                </div></div></div>
+         
+        </div>
+
+        <h2>Ticker pair margin usage breakdown</h2>
+        <div class="ticker_container">
+         
+
+          </div>
+
+        </div>
+      </div>
+    
+  </main>
+
+  <footer>
+    <div class="creds">bfxmargin.com — Bitfinex Margin Usage Analysis by whalepool.io</div>
+    <div class="creds">built by bearpig.</div>
+  </footer>
+
+
+
+  <script src="./localhost_files/modernizr-3.7.1.min.js"></script>
+  <script src="./localhost_files/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.3.1.min.js"><\/script>')</script>
+  <script src="./localhost_files/plugins.js"></script>
+  <script src="./localhost_files/main.js"></script>
+
+  <!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. -->
+  <script>
+    window.ga = function () { ga.q.push(arguments) }; ga.q = []; ga.l = +new Date;
+    ga('create', 'UA-XXXXX-Y', 'auto'); ga('set','transport','beacon'); ga('send', 'pageview')
+  </script>
+  <script src="./localhost_files/analytics.js" async="" defer=""></script>
+
+
+
+</body></html>
