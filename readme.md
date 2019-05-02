@@ -1,4 +1,6 @@
-# Bitfinex Long Vs Short script by @whalepoolbtc - https://whalepool.io   
+# bfxmargin.com
+
+Static site for showing margin data from BitFinex
 
 Based on WhalePool's script - https://github.com/Whalepool/Bitfinex-Long-vs-Short
 
