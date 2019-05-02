@@ -170,6 +170,10 @@ def get_cmc_data( tpairs ):
 
 	ticker_list = [t[0][1:-3] for t in tpairs]
 
+	overrides = { 
+		'BCH': 'BAB'
+	} 
+
 	url = "https://api.coinmarketcap.com/v1/ticker/?limit=0"
 	if hide_api_request != 1:
 		print4("requesting coinmarketcap api: "+url)	
@@ -177,13 +181,18 @@ def get_cmc_data( tpairs ):
 	tickers = {}
 	for r in response:
 		key = r['symbol']
-		if key in ticker_list:
+		bfxticker = key 
+
+		if key in overrides:
+			bfxticker = overrides[key] 
+
+		if bfxticker in ticker_list:
 
 			max_supply = r['max_supply']
 			if max_supply is not None:
 				max_supply = float(max_supply)
 
-			tickers[key] = {
+			tickers[bfxticker] = {
 				'id': r['id'],
 				'rank': r['rank'],
 				'marketcap': float(r['market_cap_usd']),
@@ -281,10 +290,9 @@ def make_chart( cmc_data, cdata, mdata ):
 	ax4.spines['bottom'].set_visible(False)
 
 
-	plt.savefig(ROOT_PATH+'/chart.png', pad_inches=1)
+	plt.savefig(ROOT_PATH+'/www/img/chart.png', pad_inches=1)
 
-	pprint(ROOT_PATH+'/chart.png')
-	exit()
+	print2('Chart made: '+ROOT_PATH+'/www/img/chart.png')
 
 
 

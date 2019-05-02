@@ -2,15 +2,7 @@
 
 Tired of the mis information out there regarding people's analysis and understanding of the bitfinex long/short data - I create this script so people can better get an understanding of the numbers and what they mean.  
   
-It's not pretty, but it works.
-
-Example - to use run main script, use -t and currency pairs you'd like to use (comma separated).  
-`long-vs-short.py -t BTCUSD, ETHUSD`  
-  
-To run the csv/json generator, use -t and currency pairs you'd like to use (comma separated).  
-`data-to-file.py -t BTCUSD, ETHUSD`  
-  
-    
+It's not pretty, but it works.  
   
 ## Todo (someone else not me !)
 If anyones feeling keen and enthusiastic, they could... 
@@ -21,9 +13,12 @@ If anyones feeling keen and enthusiastic, they could...
 - ~~Fix the combination pairs, where by ETHUSD+ETHBTC can be added up together~~ 
 - ~~Build currency values automatically from inputted ticker pairs~~
 - ~~Allow input of ticker pairs from command line arguments~~
+- ~~Output dump of data to csv/json file ~~
+- ~~Save the data hourly to csv~~ 
+- Time and date chart
+- Legend to help label charts
 - If we have a small number of tickers, sleep timer can be quicker, if more tickers, sleep time delay longer
 - Add flag to change logging level output 
-- Save the data hourly to mongo so it can be plotted at some point in the future over price etc 
 - Imgur auto upload plotted data for easy sharing 
   
 For more info join [@whalepoolbtc](https://t.me/whalepoolbtc) on telegram   
@@ -35,5 +30,5 @@ Easy table for quick comparisson
 ![Example output](https://i.imgur.com/B6Q9r97.png)
 
 ## Example data visualisaiton output 
-![Example output](https://i.imgur.com/HhvVsKQ.png)
+![Example output](https://i.imgur.com/xXUYtip.png)
 
