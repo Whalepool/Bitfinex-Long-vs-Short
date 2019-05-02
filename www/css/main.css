@@ -489,3 +489,10 @@ footer .creds {
 }
 
 
+@media all and (max-width: 1661px) {
+  .image {
+    display:none;
+  }
+}
+
+
