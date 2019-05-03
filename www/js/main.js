@@ -29,24 +29,24 @@ function RenderMargin(data){
 
 // Make HTML
     var target=$("#poster");
-    // var html="";
-    // html=html + '<div class="ticker ' + '">';
-    // html=html + '<div class="tickerpair_name">' + data.fpart + '/' + data.lpart + '</div>';
-    // html=html + '<div class="margin_data">' + data.total_longs + '</div>';
-    // html=html + '</div>';
-
-
+   
     var fdata = {} 
-    var symbolMap = {
-        'EUR': '€',
-        'USD': '$'
-    }
-
-    var symbol = symbolMap[data.lpart] || data.lpart
-
     Object.keys(data).forEach(function(key) {
         fdata[key] = addCommas(data[key])
     })
+
+    function formatWithSymbol(key) {
+        var symbolMap = {
+            'EUR': '€',
+            'USD': '$'
+        }
+
+        if (symbolMap[data.lpart]) {
+            return `${symbolMap[data.lpart]}${fdata[key]}`
+        }
+
+        return `${fdata[key]} ${data.lpart}`
+    }
 
     var html = `<div class="ticker_container">
                     <div class="ticker_header">${data.fpart}/${data.lpart}</div>
@@ -62,29 +62,29 @@ function RenderMargin(data){
                           </div>
                           <div class="long_daily_charge">
                             <div class="data_label">Long Daily Charge</div>
-                            <div class="data">${symbol} ${data.long_funding_charge}</div>
+                            <div class="data">${formatWithSymbol('long_funding_charge')}</div>
                           </div>
                           <div class="short_daily_charge">
                             <div class="data_label">Short Daily Charge</div>
-                            <div class="data">${data.fpart} ${data.short_funding_charge}</div>
+                            <div class="data">${data.short_funding_charge} ${data.fpart}</div>
                           </div>
                         </div>
                         <div class="ticker_data_right">
                           <div class="total_long">
                             <div class="data_label">Total Long</div>
-                            <div class="data">${fdata.total_longs} (${symbol} ${fdata.total_longs_usd})</div>
+                            <div class="data">${fdata.total_longs} (${formatWithSymbol('total_longs_usd')})</div>
                           </div>
                           <div class="funded_longs">
                             <div class="data_label">Funded Longs</div>
-                            <div class="data">${symbol} ${fdata.long_funding}</div>
+                            <div class="data">${formatWithSymbol('long_funding')}</div>
                           </div>
                           <div class="total_short">
                             <div class="data_label">Total Short</div>
-                            <div class="data">${fdata.total_shorts} (${symbol} ${fdata.total_shorts_usd})</div>
+                            <div class="data">${fdata.total_shorts} (${formatWithSymbol('total_shorts_usd')})</div>
                           </div>
                           <div class="funded_shorts">
                             <div class="data_label">Funded Shorts</div>
-                            <div class="data">${data.fpart} ${fdata.short_funding}</div>
+                            <div class="data">${fdata.short_funding} ${data.fpart}</div>
                           </div>
                         </div>
                 </div>`
@@ -136,7 +136,11 @@ function RenderCumlutive(data){
     var fdata = {} 
 
     Object.keys(data).forEach(function(key) {
-        fdata[key] = addCommas(data[key])
+        if (data[key]) {
+            fdata[key] = addCommas(data[key])
+        } else {
+            fdata[key] = '&infin;'
+        }
     })
 
     var html = `
