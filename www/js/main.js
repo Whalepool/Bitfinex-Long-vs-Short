@@ -1,7 +1,7 @@
 var marginData =[];
 
 function GetMarginData(){
-    var url='http://localhost:8888/data/margin_data_last.json';
+    var url='/data/margin_data_last.json';
         $.ajax({
         url: url,
         success: function(data) {
@@ -105,7 +105,7 @@ RenderMarginData()
 var cumlutiveData =[];
 
 function GetCumlutiveData(){
-    var url='http://localhost:8888/data/cumulative_data_last.json';
+    var url='/data/cumulative_data_last.json';
         $.ajax({
         url: url,
         success: function(data) {
