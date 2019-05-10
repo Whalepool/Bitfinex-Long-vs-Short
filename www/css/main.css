@@ -236,6 +236,14 @@ header {
   padding-bottom:5px;
 }
 
+.red {
+  color:#dc4460;
+}
+
+.green {
+  color: #569a5e;
+}
+
 .table_data {
   margin:15px 15px 60px;
   float:left;
