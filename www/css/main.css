@@ -18,7 +18,7 @@
     line-height: 1.4;
     background: #0f131f;
     font-family: 'Montserrat', sans-serif;
-    min-width:1039px;
+  /*  min-width:1039px;*/
 }
 
 /*
@@ -158,29 +158,24 @@ header {
   padding-left:15px;
   padding-right:15px;
   display: flex;
+  flex-wrap: wrap;
 }
 
-
-
-.image {
+.chart {
   order:1;
   padding:0 15px;
-  width:40%;
-  max-width:800px;
-  background: white;
   flex: 1 0 auto;
+  width:30%;
+  padding-top:30px;
 }
 
-.image img {
-  width:100%;
-  padding-top:15px;
-}
 
 .table_container {
   order:2;
   padding-left:15px;
   padding-right:15px;
   padding-top:20px;
+  width:60%;
 }
 
 .table {
@@ -287,7 +282,9 @@ header {
   font-family: 'Montserrat', sans-serif;
 }
 
-
+#container, #container2, #container3 {
+  margin-top:60px;
+}
 
 
 h2 {
@@ -499,8 +496,8 @@ footer .creds {
 
 
 @media all and (max-width: 1661px) {
-  .image {
-    display:none;
+  .chart, .table_container {
+    width:95%;
   }
 }
 
