@@ -12,6 +12,9 @@
    Base styles: opinionated defaults
    ========================================================================== */
 
+  body {
+  }
+
    html {
     color: #FFF;
     font-size: 1em;
@@ -185,7 +188,7 @@ header {
 
 .ticker_container {
   margin:15px;
-  width:450px;
+  width:46%;
   float:left;
   flex: 1 0 auto;
   border:1px solid #1b2237;
@@ -226,7 +229,7 @@ header {
 }
 
 .data {
-  font-size:18px;
+  font-size:1.3em;
   font-weight:100;
   padding-bottom:5px;
 }
@@ -256,7 +259,7 @@ header {
 .table_data_row {
   width:100%;
   float:left;
-  font-size:16px;
+  font-size:1em;
   font-weight:100;
   border-bottom:1px solid #0f131f;
   
@@ -282,8 +285,15 @@ header {
   font-family: 'Montserrat', sans-serif;
 }
 
+#treemap {
+  float:left;
+  width:100%;
+}
+
 #container, #container2, #container3 {
-  margin-top:60px;
+  margin-top:10px;
+  width:100%;
+  float:left;
 }
 
 
@@ -309,13 +319,6 @@ footer .creds {
   text-align: right;
   padding-bottom:5px;
 }
-
-
-
-
-
-
-
 
 
 
@@ -494,6 +497,20 @@ footer .creds {
     }
 }
 
+@media all and (min-width: 1060px) {
+  #treemap {
+    float:left;
+    margin-top:20px;
+    width:50%;
+  }
+
+  #container, #container2, #container3 {
+    margin-top:20px;
+    width:50%;
+    float:left;
+  }
+}
+
 
 @media all and (min-width: 1661px) {
   .chart_container {
@@ -501,6 +518,16 @@ footer .creds {
   }
   .table_container {
     width:60%;
+  }
+  
+  #treemap {
+    margin-top: 20px;
+    width:100%;
+  }
+
+  #container, #container2, #container3 {
+    width:100%;
+    margin-top:60px;
   }
 }
 
