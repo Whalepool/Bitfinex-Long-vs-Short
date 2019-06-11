@@ -161,7 +161,7 @@ header {
   flex-wrap: wrap;
 }
 
-.chart {
+.chart_container {
   order:1;
   padding:0 15px;
   flex: 1 0 auto;
@@ -496,7 +496,7 @@ footer .creds {
 
 
 @media all and (min-width: 1661px) {
-  .chart {
+  .chart_container {
     width:30%;
   }
   .table_container {
