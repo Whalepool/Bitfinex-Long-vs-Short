@@ -165,7 +165,7 @@ header {
   order:1;
   padding:0 15px;
   flex: 1 0 auto;
-  width:30%;
+  width:95%;
   padding-top:30px;
 }
 
@@ -175,7 +175,7 @@ header {
   padding-left:15px;
   padding-right:15px;
   padding-top:20px;
-  width:60%;
+  width:95%;
 }
 
 .table {
@@ -495,9 +495,12 @@ footer .creds {
 }
 
 
-@media all and (max-width: 1661px) {
-  .chart, .table_container {
-    width:95%;
+@media all and (min-width: 1661px) {
+  .chart {
+    width:30%;
+  }
+  .table_container {
+    width:60%;
   }
 }
 
