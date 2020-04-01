@@ -3,3 +3,5 @@ margin_data_last.csv
 cumulative_data_log.csv
 cumulative_data_last.csv
 chart.png
+charts/*
+logs/*

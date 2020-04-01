@@ -8,213 +8,26 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import squarify
 import os 
+import sys
+from utils.formatting import *
 
-hide_api_request = 1 
 ROOT_PATH = os.path.dirname(os.path.realpath(__file__))
-
-endc      = '\033[0m'
-bold      = '\033[1m'
-spacerstr = '--------------------'
-
-def minimise_ratio(ratio):
-    min_num = min(ratio)
-    ratio = [round(n / min_num, 2) for n in ratio]
-    return ratio
-    
-def round_sig(x, sig=5):
-	return round(x, sig-int(floor(log10(abs(x))))-1)
-
-def spacer():
-	green  = '\033[92m'
-	print(green, spacerstr, endc)
-
-def title(txt):
-	x = '\033[93m' 
-	print(x, bold, spacerstr, txt, spacerstr,  endc)
-
-
-def error(txt, kill=0):
-	red   = '\033[91m'
-	print(red, txt, endc)
-
-###################
-# BLUE 
-def print1(txt):
-	x   = '\033[94m'
-	print(x, txt, endc)
-
-###################
-# PURPLE  
-def print2(txt):
-	x  = '\033[95m'
-	print(x, txt, endc)
-
-###################
-# CYAN 
-def print3(txt):
-	x  = '\033[96m'
-	print(x, txt, endc)
-
-###################
-# GREEN 
-def print4(txt):
-	x  = '\033[92m'
-	print(x, txt, endc)
-
-def f(num):
-	if num == None:
-		return 'None' 
-	elif type(num) is str:
-		return num
-	else: 
-		return str("{:,}".format(num))
-
-
-
-def api_request(url):
-
-	slow_api_time = 30 
-	if hide_api_request != 1:
-		print4( 'bfx api requesting: '+url ) 
-
-	response = requests.get(url).text
-	data     = json_loads(response)
-
-	# Check we actually got the data back 
-	# Not just an api error 
-	completed = 0 
-	while completed == 0:
-
-		if isinstance(data, list):
-
-			if str(data[0]) == 'error': 
-
-				error('BFX API Error: '+str(data))
-				error('Sleeping '+str(slow_api_time)+' seconds to calm down..')
-				time.sleep(slow_api_time)
-				
-				# Re-request the data
-				response = requests.get(url).text
-
-				# Load the response
-				data = json_loads(response)
-
-				## Re-run
-
-			else:
-				# The response json does not contain error
-				# Therefore we have the response we wanted
-				# So api request actuall completed successfully
-				completed = 1
-
-		elif isinstance(data, dict):
-
-			if 'error' in data:
-
-				error('BFX API Error: '+str(data))
-				error('Sleeping '+str(slow_api_time)+' seconds to calm down..')
-				time.sleep(slow_api_time)
-				
-				# Re-request the data
-				response = requests.get(url).text
-
-				# Load the response
-				data = json_loads(response)
-
-
-		else:
-			# WTF has the api returned then ? 
-			lmsg = 'API error'
-			error(data)
-			error(lmsg)
-			exit()		
-
-
-
-	return data
-
-
-def get_currencies( tdata ): 
-
-	# Currency : [ Preformatter, Postformatter ]
-
-	# Fiat pairs 
-	fiats  = { 
-		'USD': [ '$', ''], 
-		'EUR': [ '€', ''], 
-		'JPY': ['¥', ''] , 
-		'GBP': ['$', ''] , 
-		'UST': ['$', ' USDT']
-	}
-
-	def add_curr(key):
-		if key in fiats:
-			return fiats[key]
-		else:
-			return ['',  ' '+key]
-
-
-	currs = {} 
-
-	for t in tdata:  
-
-		fpart = t[0][1:-3]
-		lpart = t[0][-3:]
-		currs[fpart] = add_curr(fpart)
-		currs[lpart] = add_curr(lpart)
-
-	return currs 
-
-
-def get_cmc_data( tpairs ):
-
-	ticker_list = [t[0][1:-3] for t in tpairs]
-
-	overrides = { 
-		'BCH': 'BAB'
-	} 
-
-	url = "https://api.coinmarketcap.com/v1/ticker/?limit=0"
-	if hide_api_request != 1:
-		print4("requesting coinmarketcap api: "+url)	
-	response = json_loads(requests.get(url).text)
-	tickers = {}
-	for r in response:
-		key = r['symbol']
-		bfxticker = key 
-
-		if key in overrides:
-			bfxticker = overrides[key] 
-
-		if bfxticker in ticker_list:
-
-			max_supply = r['max_supply']
-			if max_supply is not None:
-				max_supply = float(max_supply)
-
-			tickers[bfxticker] = {
-				'id': r['id'],
-				'rank': r['rank'],
-				'marketcap': float(r['market_cap_usd']),
-				'available_supply': float(r['available_supply']),
-				'total_supply': float(r['total_supply']),
-				'max_supply': max_supply
-			}
-
-
-	return tickers
+ROOT_PATH += '/..'
 
 def make_chart( cmc_data, cdata, mdata ):
 
-
-	cmcdf = pd.DataFrame( { k:[ round(v['marketcap']/1000000000) ] for k,v in cmc_data.items() } )
+	# Divide by 1bn to get market cap in billions
+	# Round to 2 signifiant digits 
+	cmcdf = pd.DataFrame( { k:[ round_sig(v['marketcap']/1000000000,2) ] for k,v in cmc_data.items() } )
 	
+
 	columns = [
 		'fpart', 'marketcap', 'available_supply', 'max_supply', 
 		'as_percent_long', 'as_percent_short', 
 		'total_longs_usd', 'total_shorts_usd'
 	]
 	cdf = pd.DataFrame(cdata, columns=columns ).set_index('fpart').iloc[::-1]
+
 
 	columns = [
 		'ticker', 'fpart', 'lpart', 'fpart_usd_price', 'lpart_usd_price', 
@@ -290,9 +103,9 @@ def make_chart( cmc_data, cdata, mdata ):
 	ax4.spines['bottom'].set_visible(False)
 
 
-	plt.savefig(ROOT_PATH+'/chart.png', pad_inches=1)
+	plt.savefig(ROOT_PATH+'/charts/funding.png', pad_inches=1)
 
-	print2('Chart made: '+ROOT_PATH+'/chart.png')
+	print2('Chart made: '+ROOT_PATH+'/charts/funding.png')
 
 
 

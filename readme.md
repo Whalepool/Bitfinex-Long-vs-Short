@@ -13,7 +13,7 @@ If anyones feeling keen and enthusiastic, they could...
 - ~~Fix the combination pairs, where by ETHUSD+ETHBTC can be added up together~~ 
 - ~~Build currency values automatically from inputted ticker pairs~~
 - ~~Allow input of ticker pairs from command line arguments~~
-- ~~Output dump of data to csv/json file ~~
+- ~~Output dump of data to csv/json file~~
 - ~~Save the data hourly to csv~~ 
 - Time and date chart
 - Legend to help label charts
